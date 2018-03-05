@@ -91,6 +91,7 @@ class MigrateController extends \yii\console\controllers\MigrateController
         $migrations = [];
         // Recursively iterate through each path
         foreach ($paths as $path) {
+            $path = is_array($path) ? $path[0] : $path;
             $recursiveDirectory = new \RecursiveDirectoryIterator(Yii::getAlias($path));
             $recursiveIterator = new \RecursiveIteratorIterator($recursiveDirectory);
             $recursiveRegex = new \RegexIterator($recursiveIterator, '/^.*[\\\\\\/]migrations[\\\\\\/]m(\d{6}_\d{6})_.*?\.php$/i',
