@@ -35,7 +35,7 @@ class Migration extends \yii\db\Migration
         parent::init();
         switch ($this->db->driverName) {
             case 'mysql':
-                $this->tableOptions = 'CHARACTER SET utf8 COLLATE utf8mb4_bin ENGINE=InnoDB';
+                $this->tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
                 $this->dbType = 'mysql';
                 break;
             case 'pgsql':
