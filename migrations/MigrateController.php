@@ -132,15 +132,17 @@ class MigrateController extends \yii\console\controllers\MigrateController
 
     /**
      * @param $class
-     * @return mixed
+     * @return mixed|null
      */
     private function getPathFromClass($class)
     {
         foreach ($this->getMigrationPaths() as $name => $path) {
-            if (stristr($path, $class) !== false) {
+            if (!empty($class) && stristr($path, $class) !== false) {
                 return $path;
             }
         }
+
+        return null;
     }
 
     /**
@@ -171,6 +173,7 @@ class MigrateController extends \yii\console\controllers\MigrateController
 
     /**
      * @inheritdoc
+     * @throws \yii\db\Exception
      */
     protected function getMigrationHistory($limit)
     {
@@ -188,7 +191,10 @@ class MigrateController extends \yii\console\controllers\MigrateController
         unset($history[self::BASE_MIGRATION]);
         $pathHistory = [];
         foreach ($history as $class => $timestamp) {
-            $pathHistory[$this->getPathFromClass($class)] = $timestamp;
+            $path = $this->getPathFromClass($class);
+            if ($path !== null) {
+                $pathHistory[$path] = $timestamp;
+            }
         }
         return $pathHistory;
     }
